@@ -2,11 +2,13 @@
 //
 // No hints this time! ;)
 
-// I AM NOT DONE
-
 #[derive(Debug)]
 enum Message {
     // TODO: define a few types of messages as used below
+    Quit,        // Exits the program
+    Echo,        // Prints the string to the console
+    Move,        // Moves the cursor to (x,y)
+    ChangeColor, // Changes the color of the text (RGB)
 }
 
 fn main() {

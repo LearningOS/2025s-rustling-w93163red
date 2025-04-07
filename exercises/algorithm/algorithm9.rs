@@ -1,8 +1,7 @@
 /*
-	heap
-	This question requires you to implement a binary heap function
+    heap
+    This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -38,6 +37,22 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.items.push(value);
+        self.count += 1;
+
+        // Heapify up (bubble up)
+        let mut current_idx = self.count;
+        while current_idx > 1 {
+            let parent_idx = self.parent_idx(current_idx);
+            // If the current element has higher priority than its parent, swap them
+            if (self.comparator)(&self.items[current_idx], &self.items[parent_idx]) {
+                self.items.swap(current_idx, parent_idx);
+                current_idx = parent_idx; // Move up
+            } else {
+                // Heap property is satisfied
+                break;
+            }
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -58,7 +73,22 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
+        let left_idx = self.left_child_idx(idx);
+        let right_idx = self.right_child_idx(idx);
+
+        // Check if right child exists
+        if right_idx <= self.count {
+            // Compare children using the comparator
+            // If comparator(right, left) is true, right child has higher priority
+            if (self.comparator)(&self.items[right_idx], &self.items[left_idx]) {
+                right_idx // Return right child index
+            } else {
+                left_idx // Return left child index
+            }
+        } else {
+            // Only left child exists (this assumes children_present was checked before calling)
+            left_idx // Return left child index
+        }
     }
 }
 
@@ -85,7 +115,32 @@ where
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+        if self.is_empty() {
+            return None;
+        }
+
+        self.items.swap(1, self.count);
+
+        let result = self.items.pop();
+        self.count -= 1;
+
+        if self.count <= 1 {
+            return result;
+        }
+
+        let mut current_idx = 1;
+        while self.children_present(current_idx) {
+            let child_to_swap_idx = self.smallest_child_idx(current_idx);
+
+            if (self.comparator)(&self.items[child_to_swap_idx], &self.items[current_idx]) {
+                self.items.swap(current_idx, child_to_swap_idx);
+                current_idx = child_to_swap_idx; // Move down
+            } else {
+                break;
+            }
+        }
+
+        result
     }
 }
 

@@ -27,8 +27,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
-
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
 // integers, an array of three integers, and a slice of integers.
@@ -41,6 +39,35 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (r, g, b) = tuple;
+
+        // Check if the values are in the valid range
+        if r < 0 || g < 0 || b < 0 {
+            return Err(IntoColorError::IntConversion);
+        }
+
+        // Convert to u8 and check for overflow
+        let r = if r > 255 {
+            return Err(IntoColorError::IntConversion);
+        } else {
+            r as u8
+        };
+        let g = if g > 255 {
+            return Err(IntoColorError::IntConversion);
+        } else {
+            g as u8
+        };
+        let b = if b > 255 {
+            return Err(IntoColorError::IntConversion);
+        } else {
+            b as u8
+        };
+
+        Ok(Color {
+            red: r,
+            green: g,
+            blue: b,
+        })
     }
 }
 
@@ -48,6 +75,36 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        // Destructure the array into individual components
+        let [r, g, b] = arr;
+
+        // Check if the values are in the valid range
+        if r < 0 || g < 0 || b < 0 {
+            return Err(IntoColorError::IntConversion);
+        }
+
+        // Convert to u8 and check for overflow
+        let r = if r > 255 {
+            return Err(IntoColorError::IntConversion);
+        } else {
+            r as u8
+        };
+        let g = if g > 255 {
+            return Err(IntoColorError::IntConversion);
+        } else {
+            g as u8
+        };
+        let b = if b > 255 {
+            return Err(IntoColorError::IntConversion);
+        } else {
+            b as u8
+        };
+
+        Ok(Color {
+            red: r,
+            green: g,
+            blue: b,
+        })
     }
 }
 
@@ -55,6 +112,41 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        // Check if the slice has the correct length
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+
+        // Destructure the slice into individual components
+        let [r, g, b] = [slice[0], slice[1], slice[2]];
+
+        // Check if the values are in the valid range
+        if r < 0 || g < 0 || b < 0 {
+            return Err(IntoColorError::IntConversion);
+        }
+
+        // Convert to u8 and check for overflow
+        let r = if r > 255 {
+            return Err(IntoColorError::IntConversion);
+        } else {
+            r as u8
+        };
+        let g = if g > 255 {
+            return Err(IntoColorError::IntConversion);
+        } else {
+            g as u8
+        };
+        let b = if b > 255 {
+            return Err(IntoColorError::IntConversion);
+        } else {
+            b as u8
+        };
+
+        Ok(Color {
+            red: r,
+            green: g,
+            blue: b,
+        })
     }
 }
 
